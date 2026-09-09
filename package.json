@@ -11,6 +11,13 @@
   "dependencies": {
     "@react-router/node": "^8",
     "@react-router/serve": "^8",
+    "@vtmn-play/css": "^0.35.5",
+    "@vtmn-play/design-tokens": "^0.26.5",
+    "@vtmn-play/fonts": "^0.1.2",
+    "@vtmn-play/icons": "^0.14.6",
+    "@vtmn-play/react": "^0.43.5",
+    "@vtmn-play/tailwindcss": "^0.1.7",
+    "@vtmn-play/utils": "^0.7.9",
     "isbot": "^5.1.36",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

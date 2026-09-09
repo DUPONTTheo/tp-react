@@ -14,6 +14,27 @@ importers:
       '@react-router/serve':
         specifier: ^8
         version: 8.3.1(react-router@8.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(typescript@5.9.3)
+      '@vtmn-play/css':
+        specifier: ^0.35.5
+        version: 0.35.5
+      '@vtmn-play/design-tokens':
+        specifier: ^0.26.5
+        version: 0.26.5
+      '@vtmn-play/fonts':
+        specifier: ^0.1.2
+        version: 0.1.2
+      '@vtmn-play/icons':
+        specifier: ^0.14.6
+        version: 0.14.6(react@19.2.8)
+      '@vtmn-play/react':
+        specifier: ^0.43.5
+        version: 0.43.5(@types/react@19.2.18)(react@19.2.8)
+      '@vtmn-play/tailwindcss':
+        specifier: ^0.1.7
+        version: 0.1.7(tailwindcss@4.3.3)
+      '@vtmn-play/utils':
+        specifier: ^0.7.9
+        version: 0.7.9
       isbot:
         specifier: ^5.1.36
         version: 5.2.2
@@ -399,6 +420,73 @@ packages:
   '@types/react@19.2.18':
     resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
 
+  '@vtmn-play/assets@0.15.3':
+    resolution: {integrity: sha512-FWS6zF0JXZhsce5ZiA9kf9shr/vuCCKz8DtfrFrhEond0OLkZ1Noe2l/xNtzX0Oj1TDZx1fWnXbl9TkSNasWkA==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/assets/-/@vtmn-play/assets-0.15.3.tgz}
+    peerDependencies:
+      react: '>=19.0.3 <19.1.0 || >=19.1.4 <19.2.0 || >=19.2.3'
+      svelte: ^5.37.3
+      vue: ^3.5.13
+    peerDependenciesMeta:
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+
+  '@vtmn-play/css@0.35.5':
+    resolution: {integrity: sha512-L5sh93goifIlW6qUwB7RPuJCaC1Sg9qOvVpLf9jjqHzSyphYwqVSzaKW08Vc8I9k8LifPevRF6jHTq1YOsYEog==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/css/-/@vtmn-play/css-0.35.5.tgz}
+
+  '@vtmn-play/design-tokens@0.26.5':
+    resolution: {integrity: sha512-rNgiFjP7FRa/bj9UnrTsXHR1053kd4HASYVEVBgzoG3I3Jgrm0ilquLyrhhK3fzhWBULC3+7JgqTdYuqUm2dUg==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/design-tokens/-/@vtmn-play/design-tokens-0.26.5.tgz}
+
+  '@vtmn-play/fonts@0.1.2':
+    resolution: {integrity: sha512-JriJbCJ6l7BMutB6fV9dy5+whC0VK0mfYcklOxkSDN2Rdml3ztrM2iqNe6H81ahWbcIg/XgYc0gH8uXFqQJhJw==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/fonts/-/@vtmn-play/fonts-0.1.2.tgz}
+
+  '@vtmn-play/icons@0.14.6':
+    resolution: {integrity: sha512-PKC5XujehIjrEofEO+2mEKZ6Q91uqzfvcR8sFWJ4WFfNvK4oOQUluCBAgdT0NyqeSXsgZsJYrK9nmp9vLQQJnQ==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/icons/-/@vtmn-play/icons-0.14.6.tgz}
+    peerDependencies:
+      react: '>=19.0.3 <19.1.0 || >=19.1.4 <19.2.0 || >=19.2.3'
+      svelte: ^5.37.3
+      vue: ^3.5.13
+    peerDependenciesMeta:
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+
+  '@vtmn-play/logic@0.33.2':
+    resolution: {integrity: sha512-a8fmR0b6wUrIjNZZzVVhelp1XUXfhq/05PAkKfQm7NjOpyqe12RhBd3v2kVMZ94g62k59FvJDnmBYT5fKh5NNQ==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/logic/-/@vtmn-play/logic-0.33.2.tgz}
+
+  '@vtmn-play/react@0.43.5':
+    resolution: {integrity: sha512-iou4JUIW4DOYbLan/tU+aZl/A2wBpSqAsSzh+p+e3qsrL+HoUrdwJfoVI9Oe93CAQ8jrZ9yPL9ihRnOVxQDo9w==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/react/-/@vtmn-play/react-0.43.5.tgz}
+    peerDependencies:
+      react: '>=19.0.3 <19.1.0 || >=19.1.4 <19.2.0 || >=19.2.3'
+
+  '@vtmn-play/tailwindcss@0.1.7':
+    resolution: {integrity: sha512-xylO+JMB2+0fForbzUc7HBmnBK6rYFnofS/XyNTwz9YhS5B7O/+plwEvFhVf9GIhqIWS6R5yA5jNhai762Lz4g==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/tailwindcss/-/@vtmn-play/tailwindcss-0.1.7.tgz}
+    peerDependencies:
+      tailwindcss: ^2.0.0 || ^3.0.0 || ^4.0.0
+
+  '@vtmn-play/utils@0.7.9':
+    resolution: {integrity: sha512-M13m0N2n5Tfpgjslu5+e2E+8oqvmd1cupOrCL9CBdNCq+uJwTETXpVMsR1OZWxz56fIyeSq7z1Q443dGbSWkAg==, tarball: https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/@vtmn-play/utils/-/@vtmn-play/utils-0.7.9.tgz}
+    peerDependencies:
+      vue: '*'
+    peerDependenciesMeta:
+      vue:
+        optional: true
+
+  '@xstate/react@6.1.0':
+    resolution: {integrity: sha512-ep9F0jGTI63B/jE8GHdMpUqtuz7yRebNaKv8EMUaiSi29NOglywc2X2YSOV/ygbIK+LtmgZ0q9anoEA2iBSEOw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      xstate: ^5.28.0
+    peerDependenciesMeta:
+      xstate:
+        optional: true
+
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
     engines: {node: '>= 0.6'}
@@ -445,6 +533,10 @@ packages:
   chokidar@5.0.0:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
+
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
 
   compressible@2.0.18:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
@@ -551,6 +643,9 @@ packages:
   es-object-atoms@1.1.2:
     resolution: {integrity: sha512-HWcBoN6NileqtSydK2FqHbS/LoDd2pqrnQHLyJzBj4kOp/ky2MWMN694xOfkK8/SnUsW2DH7EfyVlydKCsm1Zw==}
     engines: {node: '>= 0.4'}
+
+  es-toolkit@1.52.0:
+    resolution: {integrity: sha512-XTNEJQh1tY1ZJVcf6ayP/2n4ZPyaHlW2FWs7xvw5ddPuhUVjLD3olQVQS7kf58JbAB48iL0uL/jerTrjtV3lDA==}
 
   escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
@@ -1068,6 +1163,20 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
+  use-isomorphic-layout-effect@1.2.1:
+    resolution: {integrity: sha512-tpZZ+EX0gaghDAiFR37hj5MgY6ZN55kLiPkJsKxBMZ6GZdOSPJXiOzPM984oPYZ5AnehYx5WQp1+ME8I/P/pRA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  use-sync-external-store@1.6.0:
+    resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   valibot@1.4.2:
     resolution: {integrity: sha512-gjdCvJ6d3RyHAneqxMYMW9QMCwYMb3jpOO0IyHZV1bnRHFBHrX3VkIILt5XYR0WhwHiH7Mty8ovuPZ/O3gamrg==}
     peerDependencies:
@@ -1125,6 +1234,9 @@ packages:
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  xstate@5.32.6:
+    resolution: {integrity: sha512-WfA8WNrh6r9osuGwVm+aIPM4jmMW2LKHV1Yv9thYpOtL4HVF/kobh95K/O8v2jDCpDmP2EoY+6uvuqHXCZ6ZLw==}
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -1444,6 +1556,64 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
+  '@vtmn-play/assets@0.15.3(react@19.2.8)':
+    optionalDependencies:
+      react: 19.2.8
+
+  '@vtmn-play/css@0.35.5':
+    dependencies:
+      '@vtmn-play/design-tokens': 0.26.5
+
+  '@vtmn-play/design-tokens@0.26.5': {}
+
+  '@vtmn-play/fonts@0.1.2': {}
+
+  '@vtmn-play/icons@0.14.6(react@19.2.8)':
+    optionalDependencies:
+      react: 19.2.8
+
+  '@vtmn-play/logic@0.33.2':
+    dependencies:
+      '@vtmn-play/utils': 0.7.9
+      clsx: 2.1.1
+      xstate: 5.32.6
+    transitivePeerDependencies:
+      - vue
+
+  '@vtmn-play/react@0.43.5(@types/react@19.2.18)(react@19.2.8)':
+    dependencies:
+      '@vtmn-play/assets': 0.15.3(react@19.2.8)
+      '@vtmn-play/css': 0.35.5
+      '@vtmn-play/icons': 0.14.6(react@19.2.8)
+      '@vtmn-play/logic': 0.33.2
+      '@vtmn-play/utils': 0.7.9
+      '@xstate/react': 6.1.0(@types/react@19.2.18)(react@19.2.8)(xstate@5.32.6)
+      es-toolkit: 1.52.0
+      react: 19.2.8
+      xstate: 5.32.6
+    transitivePeerDependencies:
+      - '@types/react'
+      - svelte
+      - vue
+
+  '@vtmn-play/tailwindcss@0.1.7(tailwindcss@4.3.3)':
+    dependencies:
+      tailwindcss: 4.3.3
+
+  '@vtmn-play/utils@0.7.9':
+    dependencies:
+      clsx: 2.1.1
+
+  '@xstate/react@6.1.0(@types/react@19.2.18)(react@19.2.8)(xstate@5.32.6)':
+    dependencies:
+      react: 19.2.8
+      use-isomorphic-layout-effect: 1.2.1(@types/react@19.2.18)(react@19.2.8)
+      use-sync-external-store: 1.6.0(react@19.2.8)
+    optionalDependencies:
+      xstate: 5.32.6
+    transitivePeerDependencies:
+      - '@types/react'
+
   accepts@2.0.0:
     dependencies:
       mime-types: 3.0.2
@@ -1505,6 +1675,8 @@ snapshots:
   chokidar@5.0.0:
     dependencies:
       readdirp: 5.1.1
+
+  clsx@2.1.1: {}
 
   compressible@2.0.18:
     dependencies:
@@ -1580,6 +1752,8 @@ snapshots:
   es-object-atoms@1.1.2:
     dependencies:
       es-errors: 1.3.0
+
+  es-toolkit@1.52.0: {}
 
   escalade@3.2.0: {}
 
@@ -2061,6 +2235,16 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
+  use-isomorphic-layout-effect@1.2.1(@types/react@19.2.18)(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+    optionalDependencies:
+      '@types/react': 19.2.18
+
+  use-sync-external-store@1.6.0(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+
   valibot@1.4.2(typescript@5.9.3):
     optionalDependencies:
       typescript: 5.9.3
@@ -2080,5 +2264,7 @@ snapshots:
       jiti: 2.7.0
 
   wrappy@1.0.2: {}
+
+  xstate@5.32.6: {}
 
   yallist@3.1.1: {}
