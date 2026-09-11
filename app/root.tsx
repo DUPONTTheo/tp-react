@@ -8,8 +8,9 @@ import {
 } from 'react-router'
 
 import type { Route } from './+types/root'
-import { AuthProvider } from './contexts/auth'
-import './app.css'
+import { AuthProvider } from '~/contexts/auth'
+import '~/app.css'
+import { Nav } from '~/components/NavBar'
 
 export const links: Route.LinksFunction = () => [
   { href: 'https://fonts.googleapis.com', rel: 'preconnect' },
@@ -44,7 +45,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
+
     <AuthProvider>
+      <Nav />
       <Outlet />
     </AuthProvider>
   )

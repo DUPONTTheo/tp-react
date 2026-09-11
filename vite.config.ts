@@ -8,6 +8,6 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   ssr: {
-    noExternal: ['@vtmn-play/css'],
+    noExternal: ['@vtmn-play/react'],
   },
 })

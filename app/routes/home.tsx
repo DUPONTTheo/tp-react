@@ -21,5 +21,9 @@ export async function clientLoader({ context }: Route.ClientLoaderArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return <main>Welcome, {loaderData.user!.username}.</main>
+  return (
+    <main>
+      {loaderData.user ? `Welcome, ${loaderData.user.username}.` : 'Loading...'}
+    </main>
+  )
 }

@@ -44,6 +44,10 @@ export async function authMiddleware({
 }: {
   context: Readonly<RouterContextProvider>
 }) {
+  if (typeof window === 'undefined') {
+    return
+  }
+
   const user = getStoredUser()
 
   if (!user) {

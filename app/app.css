@@ -1,51 +1,7 @@
-/* Decathlon Sans font => https://www.decathlon.design/foundations/typography/overview*/
+@import 'tailwindcss';
+@import '@vtmn-play/design-tokens';
 @import '@vtmn-play/fonts/decathlon';
-@import '@vtmn-play/fonts/decathlon-brand';
-
-/* Design tokens => https://www.decathlon.design/foundations/tokens/overview */
-@import '@vtmn-play/design-tokens/foundations-light';
-
-/* Typography utilities => https://www.decathlon.design/foundations/typography/styles */
-@import '@vtmn-play/css/utility/typography';
-
-/* Basic normalizer to reduce browser differences */
-@import '@vtmn-play/css/utility/normalizer';
-
-/* Correct layering */
-@layer theme, base, components, vitamin-play, utilities;
-
-/* 
-As an alternative to `@import "tailwindcss"`, we import specific stuff so we can exclude the preflight.
-See https://tailwindcss.com/docs/preflight 
-*/
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
-@import '@vtmn-play/tailwindcss/theme';
-
-html,
-body {
-  max-width: 100dvw;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
-}
-
-body {
-  color: var(--vp-semantic-color-content-neutral);
-  background-color: var(--vp-semantic-color-container-neutral);
-}
-
-@media (max-width: 767px) {
-  .desktopOnly {
-    display: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .mobileOnly {
-    display: none;
-  }
-}
+@import '@vtmn-play/css';
 
 @theme {
   --color-vp-white: #ffffff;
