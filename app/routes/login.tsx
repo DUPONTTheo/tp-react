@@ -1,5 +1,5 @@
-import { Login } from "~/login/login";
+import { Login } from '~/login/login'
 
 export default function LoginRoute() {
-  return <Login />;
+  return <Login />
 }

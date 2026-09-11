@@ -1,9 +1,9 @@
 export enum UserRole {
-  Admin = "admin",
-  User = "user",
+  Admin = 'admin',
+  User = 'user',
 }
 
 export interface User {
-  username: string;
-  roles?: UserRole[];
+  username: string
+  roles?: UserRole[]
 }

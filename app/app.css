@@ -1,15 +1,15 @@
 /* Decathlon Sans font => https://www.decathlon.design/foundations/typography/overview*/
-@import "@vtmn-play/fonts/decathlon";
-@import "@vtmn-play/fonts/decathlon-brand";
+@import '@vtmn-play/fonts/decathlon';
+@import '@vtmn-play/fonts/decathlon-brand';
 
 /* Design tokens => https://www.decathlon.design/foundations/tokens/overview */
-@import "@vtmn-play/design-tokens/foundations-light";
+@import '@vtmn-play/design-tokens/foundations-light';
 
 /* Typography utilities => https://www.decathlon.design/foundations/typography/styles */
-@import "@vtmn-play/css/utility/typography";
+@import '@vtmn-play/css/utility/typography';
 
 /* Basic normalizer to reduce browser differences */
-@import "@vtmn-play/css/utility/normalizer";
+@import '@vtmn-play/css/utility/normalizer';
 
 /* Correct layering */
 @layer theme, base, components, vitamin-play, utilities;
@@ -18,9 +18,9 @@
 As an alternative to `@import "tailwindcss"`, we import specific stuff so we can exclude the preflight.
 See https://tailwindcss.com/docs/preflight 
 */
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
-@import "@vtmn-play/tailwindcss/theme";
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@vtmn-play/tailwindcss/theme';
 
 html,
 body {

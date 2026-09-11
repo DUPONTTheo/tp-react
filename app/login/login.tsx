@@ -5,36 +5,36 @@ import {
   VpInput,
   VpIcon,
   VpFormError,
-} from "@vtmn-play/react";
-import { useNavigate } from "react-router";
-import { useForm, type FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../contexts/auth";
-import { type User, UserRole } from "~/types/auth";
-import * as z from "zod";
+} from '@vtmn-play/react'
+import { useNavigate } from 'react-router'
+import { useForm, type FieldValues } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '../contexts/auth'
+import { type User, UserRole } from '~/types/auth'
+import * as z from 'zod'
 
 const VALID_USERS: (User & { password: string })[] = [
-  { username: "admin", password: "admin123", roles: [UserRole.Admin] },
-  { username: "johndoe", password: "client123", roles: [UserRole.User] },
-];
+  { password: 'admin123', roles: [UserRole.Admin], username: 'admin' },
+  { password: 'client123', roles: [UserRole.User], username: 'johndoe' },
+]
 
-z.config(z.locales.fr());
+z.config(z.locales.fr())
 
 const loginSchema = z
   .object({
-    username: z.string().min(5),
     password: z.string().min(5),
+    username: z.string().min(5),
   })
   .refine(
     (data) => {
-      const user = VALID_USERS.find((user) => user.username === data.username);
-      return user && user.password === data.password;
+      const user = VALID_USERS.find((user) => user.username === data.username)
+      return user && user.password === data.password
     },
     {
-      path: ["password"],
       message: "Nom d'utilisateur ou mot de passe invalide",
+      path: ['password'],
     },
-  );
+  )
 
 export function Login() {
   const {
@@ -43,31 +43,31 @@ export function Login() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
-  });
-  const navigate = useNavigate();
-  const { setUser } = useAuth();
+  })
+  const navigate = useNavigate()
+  const { setUser } = useAuth()
 
   const login = (data: FieldValues) => {
     const user: User = {
+      roles: data.username === 'admin' ? [UserRole.Admin] : [UserRole.User],
       username: data.username,
-      roles: data.username === "admin" ? [UserRole.Admin] : [UserRole.User],
-    };
+    }
 
     localStorage.setItem(
-      "user",
+      'user',
       JSON.stringify({
-        username: user.username,
         roles: user.roles,
+        username: user.username,
       }),
-    );
+    )
 
     setUser({
-      username: user.username,
       roles: user.roles,
-    });
+      username: user.username,
+    })
 
-    navigate("/");
-  };
+    navigate('/')
+  }
 
   return (
     <main className="flex flex-col items-center justify-center gap-4 h-svh">
@@ -84,7 +84,7 @@ export function Login() {
                 Nom d'utilisateur
               </VpFormLabel>
               <VpInput
-                {...register("username", { required: true })}
+                {...register('username', { required: true })}
                 name="username"
                 placeholder="Entrez votre nom d'utilisateur"
               />
@@ -98,7 +98,7 @@ export function Login() {
                 Mot de passe
               </VpFormLabel>
               <VpInput
-                {...register("password", { required: true })}
+                {...register('password', { required: true })}
                 name="password"
                 placeholder="Entrez votre mot de passe"
               />
@@ -123,5 +123,5 @@ export function Login() {
         </span>
       </div>
     </main>
-  );
+  )
 }
