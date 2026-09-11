@@ -1,13 +1,25 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { authMiddleware } from "~/middleware/auth";
+import { RouterAuthContext } from "~/middleware/auth";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
+    { title: "Decathlon - TP React" },
     { name: "description", content: "Welcome to React Router!" },
   ];
 }
 
-export default function Home() {
-  return <Welcome />;
+export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
+  async ({ context }, next) => {
+    await authMiddleware({ context });
+    await next();
+  },
+];
+
+export async function clientLoader({ context }: Route.ClientLoaderArgs) {
+  return { user: context.get(RouterAuthContext) };
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  return <main>Welcome, {loaderData.user!.username}.</main>;
 }
