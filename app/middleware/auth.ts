@@ -3,7 +3,7 @@ import {
   redirect,
   type RouterContextProvider,
 } from 'react-router'
-import type { User } from '~/types/auth'
+import type { User, UserRole } from '~/types/auth'
 
 export const RouterAuthContext = createContext<User | null>(null)
 
@@ -18,7 +18,7 @@ function isUser(user: unknown): user is User {
   )
 }
 
-function getStoredUser(): User | null {
+export function getStoredUser(): User | null {
   const serializedUser = localStorage.getItem(USER_STORAGE_KEY)
 
   if (!serializedUser) {
@@ -52,6 +52,50 @@ export async function authMiddleware({
 
   if (!user) {
     throw redirect('/login')
+  }
+
+  context.set(RouterAuthContext, user)
+}
+
+export async function redirectAuthenticatedMiddleware(
+  {
+    context,
+  }: {
+    context: Readonly<RouterContextProvider>
+  },
+  next: () => Promise<unknown>,
+) {
+  if (typeof window !== 'undefined') {
+    const user = getStoredUser()
+
+    if (user) {
+      context.set(RouterAuthContext, user)
+      throw redirect('/')
+    }
+  }
+
+  await next()
+}
+
+export async function rolesMiddleware({
+  context,
+  roles,
+}: {
+  context: Readonly<RouterContextProvider>
+  roles: UserRole[]
+}) {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const user = getStoredUser()
+
+  if (
+    !user ||
+    !user.roles ||
+    !roles.some((role) => user.roles?.includes(role))
+  ) {
+    throw redirect('/')
   }
 
   context.set(RouterAuthContext, user)
