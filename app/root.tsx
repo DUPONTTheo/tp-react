@@ -45,10 +45,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-
     <AuthProvider>
       <Nav />
-      <Outlet />
+      <div className="pt-18">
+        <Outlet />
+      </div>
     </AuthProvider>
   )
 }
