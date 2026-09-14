@@ -8,18 +8,26 @@ import { VpLogoutIcon } from '@vtmn-play/icons/react'
 import { useAuth } from '~/contexts/auth'
 import NavBarTab from '~/components/NavBarTab'
 import type { Tab } from '~/types/tabs'
-import { useState } from 'react'
+import { useLocation } from 'react-router'
 import { UserRole } from '~/types/auth'
 
 export function Nav() {
-  const [activeTab, setActiveTab] = useState('Produits')
+  const { pathname } = useLocation()
   const tabs: Tab[] = [
     { name: 'Produits', path: '/' },
     { name: 'Comptes', path: '/accounts' },
   ]
   const { user, logout } = useAuth()
 
-  const filteredTabs = tabs.filter((tab) => tab.name === 'Comptes' && !user?.roles?.includes(UserRole.Admin) ? false : true)
+  const filteredTabs = tabs.filter((tab) =>
+    tab.name === 'Comptes' && !user?.roles?.includes(UserRole.Admin)
+      ? false
+      : true,
+  )
+
+  const activeTab = filteredTabs.find((tab) =>
+    tab.path === '/' ? pathname === '/' : pathname.startsWith(tab.path),
+  )?.name ?? ''
 
   return (
     <VpNavigationHeader className="w-full fixed inline-flex justify-center border-b border-vp-background-alt">
@@ -36,7 +44,6 @@ export function Nav() {
               key={tab.name}
               tab={tab}
               activeTab={activeTab}
-              setActiveTab={setActiveTab}
             />
           ))}
         </div>

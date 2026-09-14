@@ -1,16 +1,15 @@
-import classNames from 'classnames';
-import { useNavigate } from 'react-router';
-import type { Tab } from '~/types/tabs';
+import classNames from 'classnames'
+import { useNavigate } from 'react-router'
+import type { Tab } from '~/types/tabs'
 
-type NavbarTabProps = { tab: Tab; activeTab: string; setActiveTab: (tab: string) => void };
+type NavbarTabProps = { tab: Tab; activeTab: string }
 
-const NavbarTab: React.FC<NavbarTabProps> = ({ tab, activeTab, setActiveTab }) => {
-  const navigate = useNavigate();
+const NavbarTab: React.FC<NavbarTabProps> = ({ tab, activeTab }) => {
+  const navigate = useNavigate()
 
   const handleClick = (path: string) => {
-    setActiveTab(tab.name);
-    navigate(path);
-  };
+    navigate(path)
+  }
 
   return (
     <button
@@ -25,7 +24,7 @@ const NavbarTab: React.FC<NavbarTabProps> = ({ tab, activeTab, setActiveTab }) =
     >
       {tab.name}
     </button>
-  );
-};
+  )
+}
 
-export default NavbarTab;
+export default NavbarTab
