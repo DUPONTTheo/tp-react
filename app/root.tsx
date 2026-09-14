@@ -9,6 +9,7 @@ import {
 
 import type { Route } from './+types/root'
 import { AuthProvider } from '~/contexts/auth'
+import { UsersProvider } from '~/contexts/users'
 import '~/app.css'
 import { Nav } from '~/components/NavBar'
 
@@ -45,12 +46,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Nav />
-      <div className="pt-18">
-        <Outlet />
-      </div>
-    </AuthProvider>
+    <UsersProvider>
+      <AuthProvider>
+        <Nav />
+        <div className="pt-18">
+          <Outlet />
+        </div>
+      </AuthProvider>
+    </UsersProvider>
   )
 }
 

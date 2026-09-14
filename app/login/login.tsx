@@ -10,61 +10,48 @@ import { useNavigate } from 'react-router'
 import { useForm, type FieldValues } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../contexts/auth'
-import { type User, UserRole } from '~/types/auth'
+import { useUsers } from '~/contexts/users'
 import * as z from 'zod'
-
-const VALID_USERS: (User & { password: string })[] = [
-  { password: 'admin123', roles: [UserRole.Admin], username: 'admin' },
-  { password: 'client123', roles: [UserRole.User], username: 'johndoe' },
-]
 
 z.config(z.locales.fr())
 
-const loginSchema = z
-  .object({
-    password: z.string().min(5),
-    username: z.string().min(5),
-  })
-  .refine(
-    (data) => {
-      const user = VALID_USERS.find((user) => user.username === data.username)
-      return user && user.password === data.password
-    },
-    {
-      message: "Nom d'utilisateur ou mot de passe invalide",
-      path: ['password'],
-    },
-  )
+const VALID_PASSWORDS: Record<string, string> = {
+  admin: 'admin123',
+  johndoe: 'client123',
+}
+
+const loginSchema = z.object({
+  password: z.string().min(5),
+  username: z.string().min(5),
+})
 
 export function Login() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
   })
   const navigate = useNavigate()
   const { setUser } = useAuth()
+  const { users } = useUsers()
 
   const login = (data: FieldValues) => {
-    const user: User = {
-      roles: data.username === 'admin' ? [UserRole.Admin] : [UserRole.User],
-      username: data.username,
+    const account = users.find((user) => user.username === data.username)
+
+    if (!account || VALID_PASSWORDS[account.username] !== data.password) {
+      setError('password', {
+        message: "Nom d'utilisateur ou mot de passe invalide",
+        type: 'validate',
+      })
+      return
     }
 
-    localStorage.setItem(
-      'user',
-      JSON.stringify({
-        roles: user.roles,
-        username: user.username,
-      }),
-    )
+    localStorage.setItem('user', JSON.stringify(account))
 
-    setUser({
-      roles: user.roles,
-      username: user.username,
-    })
+    setUser(account)
 
     navigate('/')
   }
