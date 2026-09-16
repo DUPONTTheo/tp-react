@@ -13,26 +13,18 @@ import {
   VpSearch,
   VpCheckboxChip,
 } from '@vtmn-play/react'
-import { useQuery } from '@tanstack/react-query'
 import type { Product } from '~/types/products'
 import { useRef, useState } from 'react'
+import { useProducts } from '~/contexts/products'
 
-export default function Products() {
+export default function Catalogue() {
   const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [searchValue, setSearchValue] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<
     Product['category'][]
   >([])
 
-  const {
-    isPending,
-    error,
-    data: productsData,
-  } = useQuery({
-    queryFn: () =>
-      fetch('https://fakestoreapi.com/products').then((res) => res.json()),
-    queryKey: ['productsData'],
-  })
+  const { data: productsData = [], error, isPending } = useProducts()
 
   if (isPending) return 'Loading...'
 
