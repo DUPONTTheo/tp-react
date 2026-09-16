@@ -1,13 +1,13 @@
 import type { Route } from './+types/home'
 import { authMiddleware, rolesMiddleware } from '~/middleware/auth'
 import { RouterAuthContext } from '~/middleware/auth'
+import Products from '~/products/products'
 import { UserRole } from '~/types/auth'
-import Accounts from '~/accounts/accounts'
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Decathlon - Accounts' },
-    { content: 'Manage user accounts', name: 'description' },
+    { title: 'Decathlon - Products' },
+    { content: 'Manage products', name: 'description' },
   ]
 }
 
@@ -23,6 +23,6 @@ export async function clientLoader({ context }: Route.ClientLoaderArgs) {
   return { user: context.get(RouterAuthContext) }
 }
 
-export default function AccountsRoute() {
-  return <Accounts />
+export default function ProductsRoute() {
+  return <Products />
 }

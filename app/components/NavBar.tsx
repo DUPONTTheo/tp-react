@@ -14,7 +14,8 @@ import { UserRole } from '~/types/auth'
 export function Nav() {
   const { pathname } = useLocation()
   const tabs: Tab[] = [
-    { name: 'Produits', path: '/' },
+    { name: 'Catalogue', path: '/' },
+    { name: 'Produits', path: '/products' },
     { name: 'Comptes', path: '/accounts' },
   ]
   const { user, logout } = useAuth()

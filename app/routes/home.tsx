@@ -1,11 +1,12 @@
 import type { Route } from './+types/home'
 import { authMiddleware } from '~/middleware/auth'
 import { RouterAuthContext } from '~/middleware/auth'
+import Catalogue from '~/catalogue/catalogue'
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Decathlon - TP React' },
-    { content: 'Welcome to React Router!', name: 'description' },
+    { title: 'Decathlon - Catalogue' },
+    { content: 'Browse the product catalogue', name: 'description' },
   ]
 }
 
@@ -20,10 +21,8 @@ export async function clientLoader({ context }: Route.ClientLoaderArgs) {
   return { user: context.get(RouterAuthContext) }
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
+export default function Home() {
   return (
-    <main>
-      {loaderData.user ? `Welcome, ${loaderData.user.username}.` : 'Loading...'}
-    </main>
+    <Catalogue />
   )
 }

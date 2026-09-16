@@ -12,6 +12,8 @@ import { AuthProvider } from '~/contexts/auth'
 import { UsersProvider } from '~/contexts/users'
 import '~/app.css'
 import { Nav } from '~/components/NavBar'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from '~/QueryClient'
 
 export const links: Route.LinksFunction = () => [
   { href: 'https://fonts.googleapis.com', rel: 'preconnect' },
@@ -46,14 +48,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <UsersProvider>
-      <AuthProvider>
-        <Nav />
-        <div className="pt-18">
-          <Outlet />
-        </div>
-      </AuthProvider>
-    </UsersProvider>
+    <QueryClientProvider client={queryClient}>
+      <UsersProvider>
+        <AuthProvider>
+          <Nav />
+          <div className="pt-18">
+            <Outlet />
+          </div>
+        </AuthProvider>
+      </UsersProvider>
+    </QueryClientProvider>  
   )
 }
 
