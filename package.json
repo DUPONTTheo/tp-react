@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^5.9.1",
     "@react-router/node": "^8",
     "@react-router/serve": "^8",
+    "@tanstack/react-query": "^5.102.8",
     "@vtmn-play/css": "^0.35.5",
     "@vtmn-play/design-tokens": "^0.26.5",
     "@vtmn-play/fonts": "^0.1.2",

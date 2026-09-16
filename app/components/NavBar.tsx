@@ -21,7 +21,7 @@ export function Nav() {
   const { user, logout } = useAuth()
 
   const filteredTabs = tabs.filter((tab) =>
-    tab.name === 'Comptes' && !user?.roles?.includes(UserRole.Admin)
+    (tab.name === 'Comptes' || tab.name === 'Produits') && !user?.roles?.includes(UserRole.Admin)
       ? false
       : true,
   )
@@ -31,7 +31,7 @@ export function Nav() {
   )?.name ?? ''
 
   return (
-    <VpNavigationHeader className="w-full fixed inline-flex justify-center border-b border-vp-background-alt">
+    <VpNavigationHeader className="z-9999 w-full fixed inline-flex justify-center border-b border-vp-background-alt">
       <VpNavigationHeaderRow>
         <div className="inline-flex items-center gap-4">
           <img
