@@ -1,6 +1,9 @@
-import { createContext, useContext, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { createContext, useContext } from 'react'
 import { type User, UserRole } from '~/types/auth'
 
+const usersUrl = 'https://fakestoreapi.com/users'
+const usersQueryKey = ['users'] as const
 const initialUsers: User[] = [
   { roles: [UserRole.Admin], username: 'admin' },
   { roles: [UserRole.User], username: 'johndoe' },
@@ -8,39 +11,149 @@ const initialUsers: User[] = [
 
 export const UsersContext = createContext<{
   users: User[]
-  deleteUser: (username: string) => void
-  addUser: (user: User) => void
-  updateUser: (username: string, user: User) => void
+  isLoading: boolean
+  error: Error | null
+  deleteUser: (username: string) => Promise<void>
+  addUser: (user: User) => Promise<void>
+  updateUser: (username: string, user: User) => Promise<void>
 }>({
-  addUser: () => null,
-  deleteUser: () => null,
-  updateUser: () => null,
+  addUser: async () => undefined,
+  deleteUser: async () => undefined,
+  error: null,
+  isLoading: true,
+  updateUser: async () => undefined,
   users: initialUsers,
 })
 
 export function UsersProvider({ children }: { children: React.ReactNode }) {
-  const [users, setUsers] = useState<User[]>(initialUsers)
+  const queryClient = useQueryClient()
+  const usersQuery = useQuery({
+    queryFn: async () => {
+      const response = await fetch(usersUrl)
+      if (!response.ok) {
+        throw new Error(`Unable to fetch users (${response.status})`)
+      }
+      const apiUsers = (await response.json()) as Array<{
+        id: number
+        username: string
+      }>
+      return Promise.all(
+        initialUsers.map(async (initialUser) => {
+          const existingUser = apiUsers.find(
+            (apiUser) => apiUser.username === initialUser.username,
+          )
+          if (existingUser) return { ...initialUser, id: existingUser.id }
+          const createResponse = await fetch(usersUrl, {
+            body: JSON.stringify({
+              email: `${initialUser.username}@example.com`,
+              name: { firstname: initialUser.username, lastname: 'User' },
+              password: 'password',
+              username: initialUser.username,
+            }),
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+          })
+          if (!createResponse.ok) {
+            throw new Error(`Unable to create user (${createResponse.status})`)
+          }
+          const createdUser = (await createResponse.json()) as { id: number }
+          return { ...initialUser, id: createdUser.id }
+        }),
+      )
+    },
+    queryKey: usersQueryKey,
+  })
+  const users = usersQuery.data ?? initialUsers
 
-  const deleteUser = (username: string) => {
-    setUsers((currentUsers) =>
-      currentUsers.filter((user) => user.username !== username),
-    )
-  }
-
-  const updateUser = (username: string, updatedUser: User) => {
-    setUsers((currentUsers) =>
-      currentUsers.map((user) =>
-        user.username === username ? updatedUser : user,
+  const deleteUserMutation = useMutation({
+    mutationFn: async (username: string) => {
+      const user = users.find(
+        (currentUser) => currentUser.username === username,
+      )
+      if (user?.id) {
+        const response = await fetch(`${usersUrl}/${user.id}`, {
+          method: 'DELETE',
+        })
+        if (!response.ok) {
+          throw new Error(`Unable to delete user (${response.status})`)
+        }
+      }
+      return username
+    },
+    onSuccess: (username) =>
+      queryClient.setQueryData<User[]>(usersQueryKey, (currentUsers = []) =>
+        currentUsers.filter((user) => user.username !== username),
       ),
-    )
-  }
+  })
+  const deleteUser = (username: string) =>
+    deleteUserMutation.mutateAsync(username).then(() => undefined)
+
+  const updateUserMutation = useMutation({
+    mutationFn: async ({
+      username,
+      updatedUser,
+    }: {
+      username: string
+      updatedUser: User
+    }) => {
+      const currentUser = users.find((user) => user.username === username)
+      if (currentUser?.id) {
+        const response = await fetch(`${usersUrl}/${currentUser.id}`, {
+          body: JSON.stringify({ username: updatedUser.username }),
+          headers: { 'Content-Type': 'application/json' },
+          method: 'PUT',
+        })
+        if (!response.ok) {
+          throw new Error(`Unable to update user (${response.status})`)
+        }
+      }
+      return { updatedUser, username }
+    },
+    onSuccess: ({ updatedUser, username }) =>
+      queryClient.setQueryData<User[]>(usersQueryKey, (currentUsers = []) =>
+        currentUsers.map((user) =>
+          user.username === username ? { ...updatedUser, id: user.id } : user,
+        ),
+      ),
+  })
+  const updateUser = (username: string, updatedUser: User) =>
+    updateUserMutation
+      .mutateAsync({ updatedUser, username })
+      .then(() => undefined)
+
+  const addUserMutation = useMutation({
+    mutationFn: async (user: User) => {
+      const response = await fetch(usersUrl, {
+        body: JSON.stringify({
+          email: `${user.username}@example.com`,
+          name: { firstname: user.username, lastname: 'User' },
+          password: 'password',
+          username: user.username,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      })
+      if (!response.ok) {
+        throw new Error(`Unable to create user (${response.status})`)
+      }
+      return { createdUser: (await response.json()) as { id: number }, user }
+    },
+    onSuccess: ({ createdUser, user }) =>
+      queryClient.setQueryData<User[]>(usersQueryKey, (currentUsers = []) => [
+        ...currentUsers,
+        { ...user, id: createdUser.id },
+      ]),
+  })
+  const addUser = (user: User) =>
+    addUserMutation.mutateAsync(user).then(() => undefined)
 
   return (
     <UsersContext.Provider
       value={{
-        addUser: (user: User) =>
-          setUsers((currentUsers) => [...currentUsers, user]),
+        addUser,
         deleteUser,
+        error: usersQuery.error,
+        isLoading: usersQuery.isPending,
         updateUser,
         users,
       }}

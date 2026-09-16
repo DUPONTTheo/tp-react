@@ -9,12 +9,18 @@ import {
   VpProductCardDescription,
   VpProductCardPrice,
   VpPrice,
+  VpProductCardFooter,
   VpPriceAmount,
   VpSearch,
   VpCheckboxChip,
+  VpButton,
+  VpIcon,
+  VpIconButton,
+  VpInputQuantity,
 } from '@vtmn-play/react'
 import type { Product } from '~/types/products'
 import { useRef, useState } from 'react'
+import { useCarts } from '~/contexts/carts'
 import { useProducts } from '~/contexts/products'
 
 export default function Catalogue() {
@@ -25,6 +31,7 @@ export default function Catalogue() {
   >([])
 
   const { data: productsData = [], error, isPending } = useProducts()
+  const { addProduct, cart, updateProductQuantity, removeProduct } = useCarts()
 
   if (isPending) return 'Loading...'
 
@@ -127,6 +134,45 @@ export default function Catalogue() {
                   </VpPrice>
                 </VpProductCardPrice>
               </VpProductCardBody>
+
+              <VpProductCardFooter>
+                <div className="w-full mt-4">
+                  {cart?.products.some(
+                    (product) => product.productId === id,
+                  ) ? (
+                    <div className="flex items-center justify-between gap-2">
+                      <VpInputQuantity
+                        min={1}
+                        value={
+                          cart.products.find(
+                            (product) => product.productId === id,
+                          )?.quantity ?? 1
+                        }
+                        onChange={(event) =>
+                          void updateProductQuantity(
+                            id,
+                            Number(event.target.value),
+                          )
+                        }
+                      />
+                      <VpIconButton
+                        variant="negative"
+                        aria-label="Remove product"
+                        onClick={() => void removeProduct(id)}
+                      >
+                        <VpIcon name="delete-bin" />
+                      </VpIconButton>
+                    </div>
+                  ) : (
+                    <VpButton
+                      className="w-full"
+                      onClick={() => void addProduct(id)}
+                    >
+                      Ajouter au panier
+                    </VpButton>
+                  )}
+                </div>
+              </VpProductCardFooter>
             </VpProductCard>
           ),
         )}

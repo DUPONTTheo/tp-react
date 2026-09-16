@@ -22,7 +22,5 @@ export async function clientLoader({ context }: Route.ClientLoaderArgs) {
 }
 
 export default function Home() {
-  return (
-    <Catalogue />
-  )
+  return <Catalogue />
 }

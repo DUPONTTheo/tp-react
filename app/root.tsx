@@ -15,6 +15,7 @@ import { Nav } from '~/components/NavBar'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '~/queryClient'
 import { ProductsProvider } from '~/contexts/products'
+import { CartsProvider } from '~/contexts/carts'
 
 export const links: Route.LinksFunction = () => [
   { href: 'https://fonts.googleapis.com', rel: 'preconnect' },
@@ -51,14 +52,16 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ProductsProvider>
-        <UsersProvider>
-          <AuthProvider>
-            <Nav />
-            <div className="pt-18">
-              <Outlet />
-            </div>
-          </AuthProvider>
-        </UsersProvider>
+        <AuthProvider>
+          <CartsProvider>
+            <UsersProvider>
+              <Nav />
+              <div className="pt-18">
+                <Outlet />
+              </div>
+            </UsersProvider>
+          </CartsProvider>
+        </AuthProvider>
       </ProductsProvider>
     </QueryClientProvider>
   )
