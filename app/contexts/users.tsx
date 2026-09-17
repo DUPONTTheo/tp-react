@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createContext, useContext } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { type User, UserRole } from '~/types/auth'
 
 const usersUrl = 'https://fakestoreapi.com/users'
@@ -37,7 +44,15 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         id: number
         username: string
       }>
-      return Promise.all(
+      return apiUsers
+    },
+    queryKey: usersQueryKey,
+  })
+  const [users, setUsers] = useState<User[]>(initialUsers)
+
+  const provisionUsersMutation = useMutation({
+    mutationFn: async (apiUsers: Array<{ id: number; username: string }>) => {
+      const provisionedUsers = await Promise.all(
         initialUsers.map(async (initialUser) => {
           const existingUser = apiUsers.find(
             (apiUser) => apiUser.username === initialUser.username,
@@ -60,10 +75,42 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
           return { ...initialUser, id: createdUser.id }
         }),
       )
+      return { apiUsers, provisionedUsers }
     },
-    queryKey: usersQueryKey,
+    onSuccess: ({ apiUsers, provisionedUsers }) => {
+      const provisionedApiUsers = provisionedUsers.map(({ id, username }) => ({
+        id,
+        username,
+      }))
+      queryClient.setQueryData(usersQueryKey, [
+        ...apiUsers.filter(
+          (apiUser) =>
+            !provisionedApiUsers.some(
+              (provisionedUser) =>
+                provisionedUser.username === apiUser.username,
+            ),
+        ),
+        ...provisionedApiUsers,
+      ])
+      setUsers(provisionedUsers)
+    },
   })
-  const users = usersQuery.data ?? initialUsers
+  const { mutate: provisionUsers } = provisionUsersMutation
+
+  useEffect(() => {
+    const needsProvisioning = usersQuery.data
+      ? initialUsers.some(
+          (initialUser) =>
+            !usersQuery.data?.some(
+              (apiUser) => apiUser.username === initialUser.username,
+            ),
+        )
+      : false
+
+    if (needsProvisioning && usersQuery.data) {
+      provisionUsers(usersQuery.data)
+    }
+  }, [provisionUsers, usersQuery.data])
 
   const deleteUserMutation = useMutation({
     mutationFn: async (username: string) => {
@@ -85,8 +132,11 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         currentUsers.filter((user) => user.username !== username),
       ),
   })
-  const deleteUser = (username: string) =>
-    deleteUserMutation.mutateAsync(username).then(() => undefined)
+  const deleteUser = useCallback(
+    (username: string) =>
+      deleteUserMutation.mutateAsync(username).then(() => undefined),
+    [deleteUserMutation],
+  )
 
   const updateUserMutation = useMutation({
     mutationFn: async ({
@@ -116,10 +166,13 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         ),
       ),
   })
-  const updateUser = (username: string, updatedUser: User) =>
-    updateUserMutation
-      .mutateAsync({ updatedUser, username })
-      .then(() => undefined)
+  const updateUser = useCallback(
+    (username: string, updatedUser: User) =>
+      updateUserMutation
+        .mutateAsync({ updatedUser, username })
+        .then(() => undefined),
+    [updateUserMutation],
+  )
 
   const addUserMutation = useMutation({
     mutationFn: async (user: User) => {
@@ -144,23 +197,30 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         { ...user, id: createdUser.id },
       ]),
   })
-  const addUser = (user: User) =>
-    addUserMutation.mutateAsync(user).then(() => undefined)
-
-  return (
-    <UsersContext.Provider
-      value={{
-        addUser,
-        deleteUser,
-        error: usersQuery.error,
-        isLoading: usersQuery.isPending,
-        updateUser,
-        users,
-      }}
-    >
-      {children}
-    </UsersContext.Provider>
+  const addUser = useCallback(
+    (user: User) => addUserMutation.mutateAsync(user).then(() => undefined),
+    [addUserMutation],
   )
+  const value = useMemo(
+    () => ({
+      addUser,
+      deleteUser,
+      error: usersQuery.error,
+      isLoading: usersQuery.isPending,
+      updateUser,
+      users,
+    }),
+    [
+      addUser,
+      deleteUser,
+      updateUser,
+      usersQuery.error,
+      usersQuery.isPending,
+      users,
+    ],
+  )
+
+  return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>
 }
 
 export function useUsers() {

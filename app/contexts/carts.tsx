@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createContext, useContext } from 'react'
+import { createContext, useCallback, useContext, useMemo } from 'react'
 import { useAuth } from '~/contexts/auth'
 import type { Cart } from '~/types/carts'
 
 const cartsUrl = 'https://fakestoreapi.com/carts'
 const cartsQueryKey = ['carts'] as const
+const emptyCarts: Cart[] = []
 
 export async function getCarts(): Promise<Cart[]> {
   const response = await fetch(cartsUrl)
@@ -32,7 +33,7 @@ export function CartsProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
   const queryClient = useQueryClient()
   const cartsQuery = useQuery({ queryFn: getCarts, queryKey: cartsQueryKey })
-  const carts = cartsQuery.data ?? []
+  const carts = cartsQuery.data ?? emptyCarts
 
   const userId = user?.id ?? (user?.username === 'admin' ? 1 : 2)
   const cart: Cart | undefined = carts.find(
@@ -98,58 +99,73 @@ export function CartsProvider({ children }: { children: React.ReactNode }) {
     },
   })
 
-  const addProduct = async (productId: number) => {
-    const currentProduct = cart?.products.find(
-      (product) => product.productId === productId,
-    )
-
-    let products: Cart['products'] = []
-    if (cart && currentProduct) {
-      products = cart.products.map((product) =>
-        product.productId === productId
-          ? { ...product, quantity: product.quantity + 1 }
-          : product,
+  const addProduct = useCallback(
+    async (productId: number) => {
+      const currentProduct = cart?.products.find(
+        (product) => product.productId === productId,
       )
-    } else if (cart) {
-      products = [...cart.products, { productId, quantity: 1 }]
-    } else {
-      products = [{ productId, quantity: 1 }]
-    }
 
-    await saveCartMutation.mutateAsync({ cart, products })
-  }
+      let products: Cart['products'] = []
+      if (cart && currentProduct) {
+        products = cart.products.map((product) =>
+          product.productId === productId
+            ? { ...product, quantity: product.quantity + 1 }
+            : product,
+        )
+      } else if (cart) {
+        products = [...cart.products, { productId, quantity: 1 }]
+      } else {
+        products = [{ productId, quantity: 1 }]
+      }
 
-  const updateProductQuantity = async (productId: number, quantity: number) => {
-    if (!cart) return
-
-    const products = cart.products
-      .map((product) =>
-        product.productId === productId ? { ...product, quantity } : product,
-      )
-      .filter((product) => product.quantity > 0)
-
-    await saveCartMutation.mutateAsync({ cart, products })
-  }
-
-  const removeProduct = async (productId: number) => {
-    await updateProductQuantity(productId, 0)
-  }
-
-  return (
-    <CartsContext.Provider
-      value={{
-        addProduct,
-        cart,
-        carts,
-        error: cartsQuery.error,
-        isPending: cartsQuery.isPending,
-        removeProduct,
-        updateProductQuantity,
-      }}
-    >
-      {children}
-    </CartsContext.Provider>
+      await saveCartMutation.mutateAsync({ cart, products })
+    },
+    [cart, saveCartMutation],
   )
+
+  const updateProductQuantity = useCallback(
+    async (productId: number, quantity: number) => {
+      if (!cart) return
+
+      const products = cart.products
+        .map((product) =>
+          product.productId === productId ? { ...product, quantity } : product,
+        )
+        .filter((product) => product.quantity > 0)
+
+      await saveCartMutation.mutateAsync({ cart, products })
+    },
+    [cart, saveCartMutation],
+  )
+
+  const removeProduct = useCallback(
+    async (productId: number) => {
+      await updateProductQuantity(productId, 0)
+    },
+    [updateProductQuantity],
+  )
+  const value = useMemo(
+    () => ({
+      addProduct,
+      cart,
+      carts,
+      error: cartsQuery.error,
+      isPending: cartsQuery.isPending,
+      removeProduct,
+      updateProductQuantity,
+    }),
+    [
+      addProduct,
+      cart,
+      carts,
+      cartsQuery.error,
+      cartsQuery.isPending,
+      removeProduct,
+      updateProductQuantity,
+    ],
+  )
+
+  return <CartsContext.Provider value={value}>{children}</CartsContext.Provider>
 }
 
 export function useCarts() {

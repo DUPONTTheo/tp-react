@@ -89,12 +89,9 @@ export async function rolesMiddleware({
   }
 
   const user = getStoredUser()
+  const userRoles = new Set(user?.roles)
 
-  if (
-    !user ||
-    !user.roles ||
-    !roles.some((role) => user.roles?.includes(role))
-  ) {
+  if (!user || !user.roles || !roles.some((role) => userRoles.has(role))) {
     throw redirect('/')
   }
 

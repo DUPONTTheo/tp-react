@@ -40,6 +40,7 @@ export default function Catalogue() {
   const categories: Product['category'][] = Array.from(
     new Set(productsData?.map((product: Product) => product.category)),
   )
+  const selectedCategorySet = new Set(selectedCategories)
 
   const filteredProducts = productsData?.filter((product: Product) => {
     const matchesSearch = product.title
@@ -47,7 +48,7 @@ export default function Catalogue() {
       .includes(searchValue.toLowerCase())
     const matchesCategory =
       selectedCategories.length === 0 ||
-      selectedCategories.includes(product.category)
+      selectedCategorySet.has(product.category)
 
     return matchesSearch && matchesCategory
   })
@@ -84,7 +85,7 @@ export default function Catalogue() {
         {categories.map((category) => (
           <VpCheckboxChip
             key={category}
-            checked={selectedCategories.includes(category)}
+            checked={selectedCategorySet.has(category)}
             onChange={(event) => {
               const isChecked = event.target.checked
 

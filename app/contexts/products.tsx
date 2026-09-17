@@ -1,10 +1,5 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  type UseQueryResult,
-} from '@tanstack/react-query'
-import { createContext, useContext } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { createContext, useCallback, useContext, useMemo } from 'react'
 import type { Product } from '~/types/products'
 
 const productsQueryKey = ['products'] as const
@@ -66,7 +61,10 @@ async function deleteProduct(productId: number): Promise<void> {
   }
 }
 
-type ProductsContextValue = UseQueryResult<Product[], Error> & {
+type ProductsContextValue = {
+  data: Product[] | undefined
+  error: Error | null
+  isPending: boolean
   addProduct: (product: ProductInput) => Promise<Product>
   updateProduct: (productId: number, product: ProductInput) => Promise<Product>
   deleteProduct: (productId: number) => Promise<void>
@@ -116,18 +114,40 @@ export function ProductsProvider({ children }: { children: React.ReactNode }) {
       )
     },
   })
+  const addProduct = useCallback(
+    (product: ProductInput) => addProductMutation.mutateAsync(product),
+    [addProductMutation],
+  )
+  const updateProduct = useCallback(
+    (productId: number, product: ProductInput) =>
+      updateProductMutation.mutateAsync({ product, productId }),
+    [updateProductMutation],
+  )
+  const deleteProduct = useCallback(
+    (productId: number) => deleteProductMutation.mutateAsync(productId),
+    [deleteProductMutation],
+  )
+  const value = useMemo(
+    () => ({
+      addProduct,
+      data: productsQuery.data,
+      deleteProduct,
+      error: productsQuery.error,
+      isPending: productsQuery.isPending,
+      updateProduct,
+    }),
+    [
+      addProduct,
+      deleteProduct,
+      productsQuery.data,
+      productsQuery.error,
+      productsQuery.isPending,
+      updateProduct,
+    ],
+  )
 
   return (
-    <ProductsContext.Provider
-      value={{
-        ...productsQuery,
-        addProduct: addProductMutation.mutateAsync,
-        deleteProduct: (productId) =>
-          deleteProductMutation.mutateAsync(productId),
-        updateProduct: (productId, product) =>
-          updateProductMutation.mutateAsync({ product, productId }),
-      }}
-    >
+    <ProductsContext.Provider value={value}>
       {children}
     </ProductsContext.Provider>
   )

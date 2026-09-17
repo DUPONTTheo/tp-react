@@ -14,7 +14,6 @@ const NavbarTab: React.FC<NavbarTabProps> = ({ tab, activeTab }) => {
   return (
     <button
       key={tab.name}
-      aria-selected={tab.name === activeTab}
       onClick={() => handleClick(tab.path)}
       className={classNames(
         'cursor-pointer text-vp-rock-900 border-b border-transparent text-sm transition-colors',

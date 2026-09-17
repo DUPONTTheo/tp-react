@@ -1,4 +1,10 @@
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 import type { User } from '~/types/auth'
 import { useNavigate } from 'react-router'
 
@@ -19,24 +25,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const storedUser = window.localStorage.getItem('user')
     return storedUser ? (JSON.parse(storedUser) as User) : null
   })
+  const logout = useCallback(() => {
+    setUser(null)
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('user')
+    }
+    navigate('/login')
+  }, [navigate])
+  const value = useMemo(() => ({ logout, setUser, user }), [logout, user])
 
-  return (
-    <AuthContext.Provider
-      value={{
-        logout: () => {
-          setUser(null)
-          if (typeof window !== 'undefined') {
-            window.localStorage.removeItem('user')
-          }
-          navigate('/login')
-        },
-        setUser,
-        user,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

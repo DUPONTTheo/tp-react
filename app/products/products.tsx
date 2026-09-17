@@ -37,16 +37,16 @@ export default function Products() {
   }
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [deletingProduct, setDeletingProduct] = useState<Product>()
+  const deletingProduct = useRef<Product | undefined>(undefined)
 
   const openDeleteModal = (product: Product) => {
-    setDeletingProduct(product)
+    deletingProduct.current = product
     setIsDeleteModalOpen(true)
   }
 
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false)
-    setDeletingProduct(undefined)
+    deletingProduct.current = undefined
   }
 
   const closeProductModal = () => {
@@ -165,8 +165,8 @@ export default function Products() {
             <VpButton
               variant="negative"
               onClick={() => {
-                if (!deletingProduct) return
-                deleteProduct(deletingProduct.id)
+                if (!deletingProduct.current) return
+                deleteProduct(deletingProduct.current.id)
                 closeDeleteModal()
               }}
             >
