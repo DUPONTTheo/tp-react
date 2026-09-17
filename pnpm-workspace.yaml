@@ -2,5 +2,5 @@ registries:
   npmjs: https://registry.npmjs.org/
   '@vtmn-play': https://europe-npm.pkg.dev/tnt-managed-wtbe/global-npm/
 
-minimumReleaseAge: 10080 # in minutes, equivalent to 7 days
-trustPolicy: no-downgrade
+# minimumReleaseAge: 10080 # in minutes, equivalent to 7 days
+# trustPolicy: no-downgrade
