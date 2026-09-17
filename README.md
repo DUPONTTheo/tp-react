@@ -1,3 +1,50 @@
+# Decathlon - TP React
+
+This project is initialized with vite and react router.
+
+## Librairies used
+- @vtmn-play
+    - Decathlon components library
+- react-hook-form
+    - Form handling
+- zod
+    - Validation
+- tailwind
+    - CSS Framework
+- classnames
+    - Class utils
+- @tanstack/react-query
+    - Request managment and caching
+- oxlint and oxfmt
+    - Lint and format
+
+## Architecture
+Minimalist architecture based on features (without a specific folder /features), with specific components inside releative features/folders.
+Split components to have a maintenable and reproductible environment, but no over splitting, to follow DRY and KISS principles. Within this specific "simple" project, not need to overthink and overcomplicate everything.
+
+## Routing - React Router
+This project use React Router with Framework Mode with SPA rendering.
+Using Route definitions and multiple middlewares:
+- Simple auth middleware to authenticate a user
+- Role middleware to authenticate an admin user
+    - For product and accounts route.
+
+## Contexts and state managements
+State management are handled within specific contexts with query and data mutation inside.
+Exporting a provider to be used withing pages.
+
+## Fake Store API
+Fake Store API give a fake e-commerce store API that doesn't persist data.
+
+So there is specific choices in the app according to this constraint.
+
+Tanstack Query mutations uses setQueryData instead of invalidateQueries for two reasons.
+- Invalidate queries will trigger a new get and erase "persistent" actions like create, update or delete.
+- In this case, we have all the necessary data to update the data and have up to date data. No need to impose a charge to the server. (In a real environment, this should be a decision to take. If server consistency matters, rely on invalidateQueries.)
+
+---
+
+# Start the project
 # Welcome to React Router!
 
 A modern, production-ready template for building full-stack React applications using React Router.
@@ -21,7 +68,7 @@ A modern, production-ready template for building full-stack React applications u
 Install the dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Development
@@ -29,7 +76,7 @@ npm install
 Start the development server with HMR:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Your application will be available at `http://localhost:5173`.
@@ -39,7 +86,7 @@ Your application will be available at `http://localhost:5173`.
 Create a production build:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Deployment
